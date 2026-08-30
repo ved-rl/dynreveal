@@ -1,16 +1,9 @@
-"""
-Minimal SINDy from scratch: sequential thresholded least squares (STLSQ)
-over a polynomial candidate library, exactly as in Brunton, Proctor,
-Kutz (2016) PNAS. Purpose: verify the method works on clean data with
-code you fully understand, BEFORE trusting the PySINDy library as a
-black box for the full 2-week experiment grid.
-"""
 import numpy as np
 from systems import LORENZ, simulate
 
 
 def poly_library(X, degree=2):
-    """Build [1, x1, x2, x3, x1^2, x1x2, ..., ] up to given degree."""
+    """Build [1, x1, x2, x3, x1^2, x1x2, ..., ] up to degree."""
     n, d = X.shape
     from itertools import combinations_with_replacement
     terms, names = [], []
@@ -32,17 +25,15 @@ def poly_library(X, degree=2):
 
 
 def finite_diff(t, X):
-    """Simple central-difference derivative estimate (fine for clean,
-    densely-sampled data; you'll need something smarter — e.g. a
-    smoothed spline derivative — once noise/sparsity enter the picture)."""
+    """Simple central-difference derivative estimate."""
     dt = t[1] - t[0]
     dX = np.gradient(X, dt, axis=0)
     return dX
 
 
 def stlsq(Theta, dX, lam=0.1, n_iters=10):
-    """Sequential thresholded least squares: fit least squares, zero out
-    small coefficients, refit on the survivors, repeat."""
+    """Sequential thresholded least squares: fit least squares, zero
+    small coefficients, refit on remaining."""
     n_targets = dX.shape[1]
     Xi = np.linalg.lstsq(Theta, dX, rcond=None)[0]  # (n_terms, n_targets)
     for _ in range(n_iters):
@@ -74,7 +65,7 @@ if __name__ == "__main__":
     # 3. Fit via STLSQ
     Xi = stlsq(Theta, dX, lam=0.1)
 
-    print("Recovered model (clean data, dense sampling):")
+    print("Recovered model (clean data and dense sampling):")
     print_model(Xi, names)
 
     print("\nTrue Lorenz equations (sigma=10, rho=28, beta=8/3):")
