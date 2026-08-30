@@ -1,8 +1,8 @@
 # dynreveal
 
-A small research project I'm working through: can machine learning methods actually recover the correct equations of a dynamical system when the data you're given is noisy or incomplete, and does that depend on which method you use?
+A small research project I'm working through: can machine learning methods actually recover the correct equations of a dynamical system when the data you're given is noisy or incomplete and does that depend on which method you use?
 
-I'm comparing three approaches: SINDy (sparse regression over a library of candidate terms), Neural ODEs, and Physics Informed Neural Networks (PINNs). I'm running them on three systems, Lorenz, Van der Pol, and Duffing, across different levels of noise and missing data, checking not just how well they predict but whether they actually recover the right equation.
+I'm comparing three approaches. SINDy (sparse regression over a library of candidate terms), Neural ODEs, and Physics Informed Neural Networks (PINNs). I'm running them on three systems, Lorenz, Van der Pol, and Duffing, across different levels of noise and missing data, checking whether they actually recover the right equation.
 
 ## Status
 
@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 ## Why this project
 
-Most examples you see for these methods use clean, perfect simulated data, which isn't really how real measurements work. I wanted to actually test where these methods start to break down under realistic conditions, and see if there's a simple way to make them hold up longer without building something overly complicated.
+Most examples you see for these methods use clean, perfect simulated data, which isn't really how real measurements work. I wanted to test where these methods start to break down under realistic conditions and see if there's a simple way to make them hold up longer without building something overly complicated.
 
 ## License
 
