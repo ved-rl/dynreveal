@@ -3,7 +3,6 @@ from systems import LORENZ, simulate
 
 
 def poly_library(X, degree=2):
-    """Build [1, x1, x2, x3, x1^2, x1x2, ..., ] up to degree."""
     n, d = X.shape
     from itertools import combinations_with_replacement
     terms, names = [], []
@@ -25,17 +24,14 @@ def poly_library(X, degree=2):
 
 
 def finite_diff(t, X):
-    """Simple central-difference derivative estimate."""
     dt = t[1] - t[0]
     dX = np.gradient(X, dt, axis=0)
     return dX
 
 
 def stlsq(Theta, dX, lam=0.1, n_iters=10):
-    """Sequential thresholded least squares: fit least squares, zero
-    small coefficients, refit on remaining."""
     n_targets = dX.shape[1]
-    Xi = np.linalg.lstsq(Theta, dX, rcond=None)[0]  # (n_terms, n_targets)
+    Xi = np.linalg.lstsq(Theta, dX, rcond=None)[0]
     for _ in range(n_iters):
         small = np.abs(Xi) < lam
         Xi[small] = 0
@@ -55,14 +51,11 @@ def print_model(Xi, names, state_names=("dx1", "dx2", "dx3"), tol=1e-6):
 
 
 if __name__ == "__main__":
-    # 1. Simulate clean Lorenz data
     t, X = simulate(LORENZ)
 
-    # 2. Build library + estimate derivatives
     Theta, names = poly_library(X, degree=2)
     dX = finite_diff(t, X)
 
-    # 3. Fit via STLSQ
     Xi = stlsq(Theta, dX, lam=0.1)
 
     print("Recovered model (clean data and dense sampling):")

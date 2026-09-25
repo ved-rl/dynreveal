@@ -1,9 +1,3 @@
-"""
-Sanity-check script: simulate all three systems, plot clean trajectories
-and one example noisy/sparse corruption, so you can visually confirm the
-dynamics look right (chaotic butterfly, limit cycle, forced oscillation)
-before building any discovery method on top of them.
-"""
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -37,7 +31,6 @@ plt.tight_layout()
 plt.savefig("../figs/system_validation.png", dpi=140)
 print("Saved figs/system_validation.png")
 
-# Quick numeric sanity checks
 import numpy as np
 for name, sysdef in SYSTEMS.items():
     t, x = simulate(sysdef)
